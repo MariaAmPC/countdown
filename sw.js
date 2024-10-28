@@ -7,8 +7,8 @@ self.addEventListener('install', (event) => {
           '/index.html',
           '/manifest.json',
           '/sw.js',
-          '/img/dino.png',     // Adjust paths based on your directory
-          '/img/pinguin.png',  // Adjust paths based on your directory
+          'dino.png',     // Adjust paths based on your directory
+          'pinguin.png',  // Adjust paths based on your directory
         ]);
       })
     );
