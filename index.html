@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown</title>
+    <link rel="manifest" href="/manifest.json">
+    <script>
+        if('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' });
+        }
+        </script>
+    <style>
+        .background-dark {
+            background-color: #262626;
+        }
+        .center {
+            display: flex;
+            justify-content: center;
+        }
+        .margin-top {
+            margin-top: 100px;
+        }
+        .timer {
+            font-size: 60px;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+        }
+        .button {
+            font-size: 100%;
+            border-radius: 12px;
+            background-color: #D8D4F2;
+            padding: 12px 28px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .spruch {
+            color: white;
+            font-size: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+        .image-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 100px 0 0;
+        }
+        .pinguin,
+        .dino {
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body class="background-dark">
+
+    <div class="image-container">
+        <img class="dino" src="img/dino.png" id="dino">
+        <img class="pinguin" src="img/pinguin.png" id="pinguin">
+    </div>
+
+    <div class="center timer margin-top" id="timer">00:00:00:00</div>
+
+    <div class="center margin-top">
+        <button class="button" onclick="yogi()">Yogi-Tee<br>Spruch des Tages</button>
+    </div>
+    <div class="center spruch margin-top" id="text"></div>
+
+    <script>
+        const zielDatum = new Date("November 15, 2024 15:15:00").getTime();
+        const timer = setInterval(() => {
+            const jetzt = new Date().getTime();
+            const verbleibendeZeit = zielDatum - jetzt;
+
+            const stunden = Math.floor(verbleibendeZeit / (1000 * 60 * 60)).toString().padStart(2, '0');
+            const minuten = Math.floor((verbleibendeZeit % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            const sekunden = Math.floor((verbleibendeZeit % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            const millisekunden = Math.floor(verbleibendeZeit % 1000 / 10).toString().padStart(2, '0');
+            document.getElementById("timer").innerHTML = `${stunden}:${minuten}:${sekunden}:${millisekunden}`;
+
+            if (verbleibendeZeit <= 0) {
+                clearInterval(timer);
+                document.getElementById("timer").innerHTML = "00:00:00:00";
+            }
+        }, 1);
+
+        // Funktion für Sprüche des Tages
+        function yogi() {
+            const sprueche = {
+                27: "Leben ist teilen.",
+                28: "Der Frieden ist in dir.",
+                29: "Geduld zahlt sich aus.",
+                30: "Geh nur Wege mit Herz.",
+                31: "Unschuld erweckt Intuition.",
+                1: "Schätze die Person, die du bist.",
+                2: "Mach dir selbst und anderen Mut.",
+                3: "Freude ist die Essenz des Erfolgs.",
+                4: "Entwickle die Fähigkeit zuzuhören.",
+                5: "Lerne in Stille, dir selbst zuzuhören.",
+                6: "Lass dein Verhalten für sich sprechen.",
+                7: "Lebe leicht, reise mit leichtem Gepäck.",
+                8: "Sag nichts, zu dem du nicht stehen kannst.",
+                9: "Du bist Teil des riesigen Lebensorchesters.",
+                10: "Leben ohne Liebe ist wie Segeln ohne Segel.",
+                11: "Lebe mit Respekt vor dir selbst und anderen.",
+                12: "Dankbarkeit schenkt viele neue Möglichkeiten.",
+                13: "Vergleiche dich nicht mit anderen, sei du selbst.",
+                14: "Sprich geradeaus, einfach und mit einem Lächeln.",
+                15: "Sich an jedem Moment zu erfreuen – das ist der Sinn des Lebens."
+            };
+            const heute = new Date().getDate();
+            const rheute = new Date();
+            const ziel = new Date("November 15, 2024")
+            const feld = document.getElementById("text");
+            const verbleibendeTage = Math.ceil((ziel - rheute) / (1000 * 60 * 60 * 24));
+            feld.innerHTML = `${sprueche[heute] || "Spruch nicht verfügbar"}<br><br>Nur noch ${verbleibendeTage} Tage`;
+        }
+        const startDatum = new Date("October 27, 2024");
+        const endDatum = new Date("November 15, 2024");
+        function bewegeBilder() {
+            const heute = new Date();
+            const vergangeneTage = Math.floor((heute - startDatum) / (1000 * 60 * 60 * 24));
+            const gesamtTage = Math.floor((endDatum - startDatum) / (1000 * 60 * 60 * 24));
+            const bewegungProzent = Math.min(50, vergangeneTage * 2);
+
+            document.getElementById("dino").style.marginLeft = bewegungProzent + "%";
+            document.getElementById("pinguin").style.marginRight = bewegungProzent + "%";
+        }
+
+        bewegeBilder();
+    </script>
+</body>
+
+</html>
